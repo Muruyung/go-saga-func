@@ -5,12 +5,12 @@ import (
 )
 
 type Step struct {
-	ProcessName    string
-	ExecutionFunc  func() error
-	CompensateFunc func() error
+	ProcessName   string
+	ExecutionFunc func() error
+	RollbackFunc  func() error
 }
 
 type Result struct {
-	ExecutionError   error
-	CompensateErrors *multierror.Error
+	ExecutionError error
+	RollbackErrors *multierror.Error
 }

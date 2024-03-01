@@ -12,8 +12,8 @@ func (sg *sagaInteractor) AddStep(step *Step) error {
 		return errors.New("invalid execution function, cannot be empty")
 	}
 
-	if step.CompensateFunc == nil {
-		return errors.New("invalid compensate function, cannot be empty")
+	if step.RollbackFunc == nil {
+		return errors.New("invalid rollback function, cannot be empty")
 	}
 
 	sg.steps[sg.countStep] = step

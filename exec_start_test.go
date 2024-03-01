@@ -14,9 +14,9 @@ import (
 
 func TestExecStart(t *testing.T) {
 	type args struct {
-		skipCompensateError bool
-		execErr             error
-		compErr             error
+		skipRollbackError bool
+		execErr           error
+		rollbackErr       error
 	}
 
 	var (
@@ -30,9 +30,9 @@ func TestExecStart(t *testing.T) {
 			{
 				name: "success",
 				args: args{
-					skipCompensateError: false,
-					execErr:             nil,
-					compErr:             nil,
+					skipRollbackError: false,
+					execErr:           nil,
+					rollbackErr:       nil,
 				},
 				want:    20,
 				wantErr: false,
@@ -40,29 +40,29 @@ func TestExecStart(t *testing.T) {
 			{
 				name: "failed-error_exec",
 				args: args{
-					skipCompensateError: false,
-					execErr:             defaultErr,
-					compErr:             nil,
+					skipRollbackError: false,
+					execErr:           defaultErr,
+					rollbackErr:       nil,
 				},
 				want:    5,
 				wantErr: true,
 			},
 			{
-				name: "failed-error_exec_and_skip_comp_error",
+				name: "failed-error_exec_and_skip_rollback_error",
 				args: args{
-					skipCompensateError: true,
-					execErr:             defaultErr,
-					compErr:             nil,
+					skipRollbackError: true,
+					execErr:           defaultErr,
+					rollbackErr:       nil,
 				},
 				want:    15,
 				wantErr: true,
 			},
 			{
-				name: "failed-error_exec_and_comp_error",
+				name: "failed-error_exec_and_rollback_error",
 				args: args{
-					skipCompensateError: false,
-					execErr:             defaultErr,
-					compErr:             defaultErr,
+					skipRollbackError: false,
+					execErr:           defaultErr,
+					rollbackErr:       defaultErr,
 				},
 				want:    5,
 				wantErr: true,
@@ -73,7 +73,7 @@ func TestExecStart(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var (
-				sagaTest = saga.NewSaga(tt.args.skipCompensateError)
+				sagaTest = saga.NewSaga(tt.args.skipRollbackError)
 				value    = 5
 				err      error
 				mu       sync.Mutex
@@ -85,7 +85,7 @@ func TestExecStart(t *testing.T) {
 					value += 5
 					return nil
 				},
-				CompensateFunc: func() error {
+				RollbackFunc: func() error {
 					value -= 5
 					return nil
 				},
@@ -98,9 +98,9 @@ func TestExecStart(t *testing.T) {
 					value += 10
 					return tt.args.execErr
 				},
-				CompensateFunc: func() error {
+				RollbackFunc: func() error {
 					value -= 10
-					return tt.args.compErr
+					return tt.args.rollbackErr
 				},
 			})
 			assert.Nil(t, err)

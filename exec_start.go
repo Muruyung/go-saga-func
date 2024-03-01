@@ -32,10 +32,10 @@ func (sg *sagaInteractor) ExecStart() error {
 
 	if sg.result != nil {
 		logrus.Warn("SAGA ROLLBACK PROCESS")
-		if sg.skipCompensateError {
+		if sg.skipRollbackError {
 			indexErr -= 1
 		}
-		go sg.execCompensation(indexErr)
+		go sg.execRollback(indexErr)
 
 		return sg.result.ExecutionError
 	}

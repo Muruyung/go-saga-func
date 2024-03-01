@@ -28,7 +28,7 @@ func TestAddStep(t *testing.T) {
 						ExecutionFunc: func() error {
 							return nil
 						},
-						CompensateFunc: func() error {
+						RollbackFunc: func() error {
 							return nil
 						},
 					},
@@ -36,7 +36,7 @@ func TestAddStep(t *testing.T) {
 				wantErr: false,
 			},
 			{
-				name: "failed-empty_compensate_func",
+				name: "failed-empty_rollback_func",
 				args: args{
 					step: &saga.Step{
 						ProcessName: "test 2",
@@ -52,7 +52,7 @@ func TestAddStep(t *testing.T) {
 				args: args{
 					step: &saga.Step{
 						ProcessName: "test 3",
-						CompensateFunc: func() error {
+						RollbackFunc: func() error {
 							return nil
 						},
 					},
