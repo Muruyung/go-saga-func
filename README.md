@@ -26,7 +26,7 @@ How to implement it is quite simple, you only need to add step for execution fun
 
 ### Example condition without error
 
-This code has output ``Result: 25``
+This code has output `Result: 25`
 
 ```go
 package main
@@ -40,36 +40,36 @@ func main() {
     var (
         saga         = sagafunc.NewSaga()
         exampleValue = 10
-		err          error
+        err          error
     )
 
     err = sagaTest.AddStep(&saga.Step{
-		ProcessName: "step 1",
-		ExecutionFunc: func() error {
-			exampleValue += 5
-			return nil
-		},
-		RollbackFunc: func() error {
-			exampleValue -= 5
-			return nil
-		},
-	})
+        ProcessName: "step 1",
+        ExecutionFunc: func() error {
+            exampleValue += 5
+            return nil
+        },
+        RollbackFunc: func() error {
+            exampleValue -= 5
+            return nil
+        },
+    })
     if err != nil {
         fmt.Println(err)
         return
     }
 
-	err = sagaTest.AddStep(&saga.Step{
-		ProcessName: "step 2",
-		ExecutionFunc: func() error {
-			exampleValue += 10
-			return nil
-		},
-		RollbackFunc: func() error {
-			exampleValue -= 10
-			return nil
-		},
-	})
+    err = sagaTest.AddStep(&saga.Step{
+        ProcessName: "step 2",
+        ExecutionFunc: func() error {
+            exampleValue += 10
+            return nil
+        },
+        RollbackFunc: func() error {
+            exampleValue -= 10
+            return nil
+        },
+    })
     if err != nil {
         fmt.Println(err)
         return
@@ -86,7 +86,7 @@ func main() {
 
 ### Example condition with error and rollback
 
-This code has output ``Result: 10`` and detail error
+This code has output `Result: 10` and detail error
 
 ```go
 package main
@@ -100,36 +100,36 @@ func main() {
     var (
         saga         = sagafunc.NewSaga()
         exampleValue = 10
-		err          error
+        err          error
     )
 
     err = sagaTest.AddStep(&saga.Step{
-		ProcessName: "step 1",
-		ExecutionFunc: func() error {
-			exampleValue += 5
-			return nil
-		},
-		RollbackFunc: func() error {
-			exampleValue -= 5
-			return nil
-		},
-	})
+        ProcessName: "step 1",
+        ExecutionFunc: func() error {
+            exampleValue += 5
+            return nil
+        },
+        RollbackFunc: func() error {
+            exampleValue -= 5
+            return nil
+        },
+    })
     if err != nil {
         fmt.Println(err)
         return
     }
 
-	err = sagaTest.AddStep(&saga.Step{
-		ProcessName: "step 2",
-		ExecutionFunc: func() error {
-			exampleValue += 10
-			return fmt.Errorf("some detail error here")
-		},
-		RollbackFunc: func() error {
-			exampleValue -= 10
-			return nil
-		},
-	})
+    err = sagaTest.AddStep(&saga.Step{
+        ProcessName: "step 2",
+        ExecutionFunc: func() error {
+            exampleValue += 10
+            return fmt.Errorf("some detail error here")
+        },
+        RollbackFunc: func() error {
+            exampleValue -= 10
+            return nil
+        },
+    })
     if err != nil {
         fmt.Println(err)
         return
